@@ -2,16 +2,22 @@ package timesort;
 
 import org.apache.commons.math3.stat.correlation.KendallsCorrelation;
 import timesort.ext.RandomArrayGenerator;
+import timesort.imp.TimeSort;
 
 import java.util.Arrays;
 
 public class Run {
 
     public static void main(String[] args) {
-        double[] unsortedValues = RandomArrayGenerator.generateArray(100);
+        double[] unsortedValues = RandomArrayGenerator.generateArray(160);
         double[] sortedValues = combSort(unsortedValues.clone());
+        TimeSort sorter = new TimeSort(300);
+        double[] timelySorted = sorter.combSort(unsortedValues.clone());
+        double corr = new KendallsCorrelation().correlation(sortedValues, timelySorted);
         System.out.println(Arrays.toString(unsortedValues));
         System.out.println(Arrays.toString(sortedValues));
+        System.out.println(Arrays.toString(timelySorted));
+        System.out.println("Kendallsche Korrelation: " + corr);
     }
 
     public static double[] combSort(double[] values){
