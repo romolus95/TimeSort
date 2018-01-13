@@ -1,23 +1,39 @@
 package timesort;
 
-import org.apache.commons.math3.stat.correlation.KendallsCorrelation;
 import timesort.ext.RandomArrayGenerator;
-import timesort.imp.TimeSort;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Run {
 
-    public static void main(String[] args) {
-        double[] unsortedValues = RandomArrayGenerator.generateArray(160);
-        double[] sortedValues = combSort(unsortedValues.clone());
-        TimeSort sorter = new TimeSort(300);
-        double[] timelySorted = sorter.combSort(unsortedValues.clone());
-        double corr = new KendallsCorrelation().correlation(sortedValues, timelySorted);
-        System.out.println(Arrays.toString(unsortedValues));
-        System.out.println(Arrays.toString(sortedValues));
-        System.out.println(Arrays.toString(timelySorted));
-        System.out.println("Kendallsche Korrelation: " + corr);
+    public static final int COUNT_OF_RUNS = 100000;
+    public static final int ARRAY_LENGTH = 160;
+    public static final int MAX_COMPARISONS = 300;
+    public static final double CORRELATION_REQ = 0.4;
+
+    public static void main(String[] args) throws InterruptedException {
+        List<Thread> threads = new ArrayList<>();
+        List<SorterThread> sorterThreads = new ArrayList<>();
+        for(int i = 0; i < COUNT_OF_RUNS; i++){
+            double[] unsortedValues = RandomArrayGenerator.generateArray(ARRAY_LENGTH);
+            double[] sortedValues = combSort(unsortedValues.clone());
+            SorterThread sorterThread = new SorterThread(unsortedValues, sortedValues, MAX_COMPARISONS);
+            sorterThreads.add(sorterThread);
+            threads.add(new Thread(sorterThread));
+        }
+        threads.forEach(Thread::start);
+        for (Thread t : threads) t.join();
+        double count = 0;
+        for(SorterThread st: sorterThreads){
+            int corr = (int) (st.getArrayCorrelation()*100);
+            if(corr >= (int) (CORRELATION_REQ * 100)) {
+                count += 1;
+            }
+        }
+        double percentage = (count/COUNT_OF_RUNS)*100;
+        System.out.println("Total count of timely sorted arrays: " + count);
+        System.out.println("Percentage of timely sorted arrays: " + percentage);
     }
 
     public static double[] combSort(double[] values){

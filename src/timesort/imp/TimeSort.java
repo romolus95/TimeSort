@@ -24,7 +24,7 @@ public class TimeSort {
                 gap = 1;
             }
             while (i + gap < values.length && compCount < compLimit){
-                if(values[i] > values[(int)(i+gap)]){
+                if(values[i] > values[(int)(i+gap)] && compCount < compLimit){
                     double temp = values[i];
                     values[i] = values[(int)(i+gap)];
                     values[(int)(i+gap)] = temp;
