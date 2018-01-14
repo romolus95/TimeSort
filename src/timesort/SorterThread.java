@@ -10,10 +10,12 @@ public class SorterThread implements Runnable{
     private double[] timelyArray;
     private TimeSort sorter;
     private double arrayCorrelation;
+    private SortingAlgorithm algorithm;
 
-    public SorterThread(double[] timelyArray, double[] sortedArray, int compLimit){
+    public SorterThread(double[] timelyArray, double[] sortedArray, int compLimit, SortingAlgorithm algorithm){
         this.timelyArray = timelyArray;
         this.sortedArray = sortedArray;
+        this.algorithm = algorithm;
         sorter = new TimeSort(compLimit);
     }
 
@@ -23,7 +25,14 @@ public class SorterThread implements Runnable{
 
     @Override
     public void run() {
-        sorter.combSort(timelyArray);
+        switch (algorithm){
+            case COMBSORT: sorter.combSort(timelyArray);
+                break;
+            case QUICKSORT: sorter.quickSort(timelyArray);
+                break;
+            case BUBBLESORT: sorter.bubbleSort(timelyArray);
+                break;
+        }
         arrayCorrelation = new KendallsCorrelation().correlation(sortedArray, timelyArray);
     }
 }
