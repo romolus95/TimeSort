@@ -13,10 +13,12 @@ public class Run {
     public static final int ARRAY_LENGTH = 160;
     public static final int MAX_COMPARISONS = 300;
     public static final double CORRELATION_REQ = 0.4;
-    public static final SortingAlgorithm[] ALGORITHMS = {SortingAlgorithm.COMBSORT, SortingAlgorithm.QUICKSORT, SortingAlgorithm.BUBBLESORT};
+    public static final SortingAlgorithm[] ALGORITHMS = {SortingAlgorithm.COMBSORT,
+            SortingAlgorithm.QUICKSORT, SortingAlgorithm.BUBBLESORT};
 
     public static void main(String[] args) throws InterruptedException {
-        System.out.println("Array length: " + ARRAY_LENGTH);
+        System.out.println("Comparison for " + COUNT_OF_RUNS + " arrays");
+        System.out.println("Array length: " + ARRAY_LENGTH + " elements\n");
         Map<SortingAlgorithm, List<SorterThread>> algorithmListMap = new HashMap<>();
         List<Thread> threads = new ArrayList<>();
         for(int i = 0; i < ALGORITHMS.length; i++){
