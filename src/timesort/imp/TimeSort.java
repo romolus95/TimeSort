@@ -24,13 +24,12 @@ public class TimeSort {
                 gap = 1;
             }
             while (i + gap < values.length && compCount < compLimit){
-                if(values[i] > values[(int)(i+gap)] && compCount < compLimit){
+                if(compare(values[i], values[(int)(i+gap)]) && compCount < compLimit){
                     double temp = values[i];
                     values[i] = values[(int)(i+gap)];
                     values[(int)(i+gap)] = temp;
                     sorted = false;
                 }
-                compCount++;
                 i += 1;
             }
         }
@@ -54,21 +53,19 @@ public class TimeSort {
         double pivot, help;
         int i, j;
         pivot = values[right];
-        i     = left;
-        j     = right-1;
+        i = left;
+        j = right-1;
         while(i<=j && compCount < compLimit) {
-            if (values[i] > pivot) {
+            if (compare(values[i], pivot)) {
                 help = values[i];
                 values[i] = values[j];
                 values[j] = help;
                 j--;
             } else i++;
-            compCount++;
         }
-        help      = values[i];
-        values[i]      = values[right];
+        help = values[i];
+        values[i] = values[right];
         values[right] = help;
-
         return i;
     }
 
@@ -76,16 +73,19 @@ public class TimeSort {
         double temp;
         for(int i=1; i<values.length; i++) {
             for(int j=0; j<values.length-i; j++) {
-                if(values[j]>values[j+1] && compCount < compLimit) {
-                    temp=values[j];
-                    values[j]=values[j+1];
-                    values[j+1]=temp;
+                if(compare(values[j],values[j+1]) && compCount < compLimit) {
+                    temp = values[j];
+                    values[j] = values[j + 1];
+                    values[j + 1] = temp;
                 }
-                compCount++;
             }
         }
         return values;
     }
 
+    public boolean compare(double x, double y) {
+        compCount++;
+        return x > y;
+    }
 
 }
