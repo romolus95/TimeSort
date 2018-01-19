@@ -26,11 +26,17 @@ public class SorterThread implements Runnable{
     @Override
     public void run() {
         switch (algorithm){
-            case COMBSORT: sorter.combSort(timelyArray);
+            case COMBSORT:
+                timelyArray = sorter.combSort(timelyArray);
                 break;
-            case QUICKSORT: sorter.quickSort(timelyArray);
+            case QUICKSORT:
+                timelyArray = sorter.quickSort(timelyArray);
                 break;
-            case BUBBLESORT: sorter.bubbleSort(timelyArray);
+            case BUBBLESORT:
+                timelyArray = sorter.bubbleSort(timelyArray);
+                break;
+            case MERGESORT:
+                timelyArray = sorter.mergeSort(timelyArray);
                 break;
         }
         arrayCorrelation = new KendallsCorrelation().correlation(sortedArray, timelyArray);

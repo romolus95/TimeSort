@@ -1,5 +1,7 @@
 package timesort.imp;
 
+import java.util.Arrays;
+
 public class TimeSort {
 
     private int compCount;
@@ -81,6 +83,36 @@ public class TimeSort {
             }
         }
         return values;
+    }
+
+    public double[] mergeSort(double[] values) {
+        double[] left = Arrays.copyOfRange(values, 0, (values.length+1/2));
+        double[] right = Arrays.copyOfRange(values, (values.length+1/2), values.length);
+        if(values.length > 1) return values;
+        else{
+            left = mergeSort(left);
+            right = mergeSort(right);
+        }
+        return merge(left, right);
+    }
+
+    public double[] merge(double[] left, double[] right) {
+        int i = 0, j = 0, k = 0;
+        double[] result = new double[left.length + right.length];
+        while (i < left.length-1 && j < right.length-1){
+                if(compare(left[i], right[j])){
+                    result[k++] = right[j++];
+                } else {
+                    result[k++] = left[i++];
+                }
+        }
+        while (i < left.length-1){
+            result[k++] = left[i++];
+        }
+        while (j < right.length-1){
+            result[k++] = right[j++];
+        }
+        return result;
     }
 
     public boolean compare(double x, double y) {

@@ -14,7 +14,7 @@ public class Run {
     public static final int MAX_COMPARISONS = 300;
     public static final double CORRELATION_REQ = 0.4;
     public static final SortingAlgorithm[] ALGORITHMS = {SortingAlgorithm.COMBSORT,
-            SortingAlgorithm.QUICKSORT, SortingAlgorithm.BUBBLESORT};
+            SortingAlgorithm.QUICKSORT, SortingAlgorithm.BUBBLESORT, SortingAlgorithm.MERGESORT};
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Comparison for " + COUNT_OF_RUNS + " arrays");
@@ -46,6 +46,9 @@ public class Run {
                     break;
                 case BUBBLESORT:
                     System.out.println("BubbleSort:");
+                    break;
+                case MERGESORT:
+                    System.out.println("MergeSort:");
                     break;
 
             }

@@ -1,5 +1,5 @@
 package timesort;
 
 public enum SortingAlgorithm {
-    COMBSORT, QUICKSORT, BUBBLESORT
+    COMBSORT, QUICKSORT, BUBBLESORT, MERGESORT
 }
