@@ -13,8 +13,8 @@ public class Run {
     public static final int ARRAY_LENGTH = 160;
     public static final int MAX_COMPARISONS = 300;
     public static final double CORRELATION_REQ = 0.4;
-    public static final SortingAlgorithm[] ALGORITHMS = {SortingAlgorithm.COMBSORT,
-            SortingAlgorithm.QUICKSORT, SortingAlgorithm.BUBBLESORT, SortingAlgorithm.MERGESORT};
+    public static final SortingAlgorithm[] ALGORITHMS = {
+            SortingAlgorithm.SHELLSORT, SortingAlgorithm.COMBSORT, SortingAlgorithm.MERGESORT, SortingAlgorithm.QUICKSORT};
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Comparison for " + COUNT_OF_RUNS + " arrays");
@@ -30,8 +30,12 @@ public class Run {
         for (Thread t : threads) t.join();
         for(SortingAlgorithm algorithm : algorithmListMap.keySet()) {
             double count = 0;
+            double maxCorr = -1;
+            double minCorr = 1;
             for (SorterThread st : algorithmListMap.get(algorithm)) {
                 int corr = (int) (st.getArrayCorrelation() * 100);
+                maxCorr = st.getArrayCorrelation()>maxCorr?st.getArrayCorrelation():maxCorr;
+                minCorr = st.getArrayCorrelation()<minCorr?st.getArrayCorrelation():minCorr;
                 if (corr >= (int) (CORRELATION_REQ * 100)) {
                     count += 1;
                 }
@@ -50,10 +54,15 @@ public class Run {
                 case MERGESORT:
                     System.out.println("MergeSort:");
                     break;
+                case SHELLSORT:
+                    System.out.println("ShellSort:");
+                    break;
 
             }
             System.out.println("Total count of timely sorted arrays: " + count);
-            System.out.println("Percentage of timely sorted arrays: " + percentage + "\n");
+            System.out.println("Percentage of timely sorted arrays: " + percentage);
+            System.out.println("Minimal Correlation: " + minCorr);
+            System.out.println("Maximal Correlation: " + maxCorr + "\n");
         }
     }
 

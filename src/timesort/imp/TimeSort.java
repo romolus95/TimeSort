@@ -6,13 +6,14 @@ public class TimeSort {
 
     private int compCount;
     private int compLimit;
+    private final int DEFAULT_BUCKET_SIZE = 50;
 
     public TimeSort(int compLimit){
         this.compCount = 0;
         this.compLimit = compLimit;
     }
 
-    public double[] combSort(double[] values){
+    public void combSort(double[] values){
         double gap = values.length;
         double shrink = 1.3;
         boolean sorted = false;
@@ -35,12 +36,10 @@ public class TimeSort {
                 i += 1;
             }
         }
-        return values;
     }
 
-    public double[] quickSort(double[] values){
+    public void quickSort(double[] values){
         quickSort(values, 0, values.length-1);
-        return values;
     }
 
     public void quickSort(double values[], int left, int right) {
@@ -71,7 +70,7 @@ public class TimeSort {
         return i;
     }
 
-    public double[] bubbleSort(double[] values) {
+    public void bubbleSort(double[] values) {
         double temp;
         for(int i=1; i<values.length; i++) {
             for(int j=0; j<values.length-i; j++) {
@@ -82,7 +81,6 @@ public class TimeSort {
                 }
             }
         }
-        return values;
     }
 
     public double[] mergeSort(double[] values) {
@@ -115,9 +113,30 @@ public class TimeSort {
         return result;
     }
 
+    public void shellSort(double[] values){
+        int n = values.length;
+
+        for (int gap = n/2; gap > 0; gap /= 2) {
+            for (int i = gap; i < n && compCount < compLimit; i += 1) {
+                double temp = values[i];
+                int j;
+                for (j = i; compareEq(j, gap)
+                        && compare(values[j - gap], temp)
+                        && compCount < compLimit; j -= gap)
+                    values[j] = values[j - gap];
+                values[j] = temp;
+            }
+        }
+    }
+
     public boolean compare(double x, double y) {
         compCount++;
         return x > y;
+    }
+
+    public boolean compareEq(double x, double y){
+        compCount++;
+        return x >= y;
     }
 
 }
